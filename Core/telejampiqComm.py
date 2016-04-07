@@ -21,7 +21,7 @@ class pythonClientDB:
 
         m = 0
         for i in coll:
-            vect.apped(i)
+            vect.append(i)
             m+=1
         return vect
 
