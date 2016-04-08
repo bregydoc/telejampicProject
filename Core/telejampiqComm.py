@@ -24,4 +24,58 @@ class pythonClientDB:
             vect.append(i)
             m+=1
         return vect
+    def setDB(self,database,collection,data,value):
+        result = self.client[database][collection].update_one(
+            {data: 9999.0},
+            {
+                "$set":{
+                    data: value
+                }
+            }
+        )
+        print result
+
+
+class telejampiqData:
+
+    def __init__(self, server):
+        self.comm = pythonClientDB(server)
+
+    def structParse(self, vectorDeDatos):
+        longitud = len(vectorDeDatos)
+        if longitud==4:
+            logFinal = '{"sensor1":'+str(vectorDeDatos[0])+","+'"sensor2":'+str(vectorDeDatos[1])+","+'"sensor3":'+ str(vectorDeDatos[2])+'}'
+        else:
+            print "Vector de datos incorrecto"
+
+
+    def refreshData(self):
+        pass
+
+    def uploadData(self):
+        pass
+
+
+
+    def downloadData(self):
+
+        vectF = []
+        data = self.comm.getDB('telejampiqDB','sensores')
+        for i in range(0,len(data)):
+            vectF.append(data[i]['sensor{0}'.format(i+1)])
+
+        return vectF
+
+
+
+
+
+
+
+
+
+
+
+
+
 
