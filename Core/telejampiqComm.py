@@ -40,8 +40,7 @@ class pythonClientDB:
             indexData=1
 
         pastValue = self.getDB(database, collection)[0][data]['value']
-        print pastValue
-        print indexData
+
         if indexData==0:
             result = self.client[database][collection].update_one(
             {
@@ -79,11 +78,12 @@ class pythonClientDB:
 
             )
         elif indexData == 1:
+
             result = self.client[database][collection].update_one(
             {
                 "ID":"0f01s123daj4",
                 "sensor2":{
-                    "value":value,
+                    "value":pastValue,
                     "state":"False",
                     "timeout":0
                 },
@@ -115,7 +115,6 @@ class pythonClientDB:
                 }
 
             )
-
 
 
 
