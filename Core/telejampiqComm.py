@@ -10,9 +10,17 @@ class pythonClientDB:
             print "No se pudo conectar"
 
         self.databasesNames = self.client.database_names()
+        self.ID = "0f01s123daj4"
 
     def readDBS(self):
         return self.databasesNames
+
+    def findDatawithIndex(self, database, collection, data):
+        m = 0
+        for i in self.client[database][collection].find():
+            if data in i.keys():
+                return m
+            m+=1
 
     def getDB(self, database, collection):
         vect = []
@@ -24,16 +32,92 @@ class pythonClientDB:
             vect.append(i)
             m+=1
         return vect
-    def setDB(self,database,collection,data,value):
-        result = self.client[database][collection].update_one(
-            {data: 9999.0},
+    def setDB(self,database, collection, data, value):
+        indexData = 4
+        if data == 'sensor1':
+            indexData=0
+        elif data == 'sensor2':
+            indexData=1
+
+        pastValue = self.getDB(database, collection)[0][data]['value']
+        print pastValue
+        print indexData
+        if indexData==0:
+            result = self.client[database][collection].update_one(
             {
-                "$set":{
-                    data: value
+                "ID":"0f01s123daj4",
+                "sensor1":{
+                    "value":pastValue,
+                    "state":"True",
+                    "timeout":0
+                },
+                "sensor2":{
+                    "value":9999,
+                    "state":"False",
+                    "timeout":0
                 }
-            }
-        )
-        print result
+
+            },
+                {
+                    "$set":{
+
+                            "ID":"0f01s123daj4",
+                            "sensor1":{
+                                "value":value,
+                                "state":"True",
+                                "timeout":0
+                            },
+                            "sensor2":{
+                                "value":9999,
+                                "state":"False",
+                                "timeout":0
+                            }
+
+
+                    }
+                }
+
+            )
+        elif indexData == 1:
+            result = self.client[database][collection].update_one(
+            {
+                "ID":"0f01s123daj4",
+                "sensor2":{
+                    "value":value,
+                    "state":"False",
+                    "timeout":0
+                },
+                "sensor1":{
+                    "value":9999,
+                    "state":"True",
+                    "timeout":0
+                }
+
+            },
+                {
+                    "$set":{
+
+                            "ID":"0f01s123daj4",
+                            "sensor2":{
+                                "value":value,
+                                "state":"False",
+                                "timeout":0
+                            },
+                            "sensor1":{
+                                "value":9999,
+                                "state":"True",
+                                "timeout":0
+                            }
+
+
+
+                    }
+                }
+
+            )
+
+
+
 
 
 class telejampiqData:
